@@ -7,7 +7,7 @@ import java.io.IOException;
  * Created by pete on 3/04/2015.
  */
 public interface IAppSettingsService {
-    public void loadAppSettings() throws IOException, IOException;
+    public void loadAppSettings() throws IOException;
     public void storeAppSettings() throws IOException;
 
     public String getAssettoCorsaDirectory();
