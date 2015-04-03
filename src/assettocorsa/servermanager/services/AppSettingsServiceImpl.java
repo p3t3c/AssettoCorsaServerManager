@@ -11,7 +11,8 @@ import java.io.*;
  */
 public class AppSettingsServiceImpl implements IAppSettingsService {
     public static final String ASSETTO_CORSA_DEFAULT_DIR = "C:\\Program Files (x86)\\Steam\\SteamApps\\common\\assettocorsa";
-    private static final String DEFAULT_EXPORT_DIR = System.getProperty("user.home" + File.separator+ "Documents");
+    private static final String DEFAULT_EXPORT_DIR = System.getProperty("user.home") + File.separator+ "Documents";
+    private static final String SETTINGS_FILE_NAME = "assettoCorsaServerManagerSettings.json";
     private final String applicationSettingsDirectory;
     private AppSettingsData settings;
 
@@ -23,7 +24,7 @@ public class AppSettingsServiceImpl implements IAppSettingsService {
 
     @Override
     public void loadAppSettings() throws IOException {
-        File settingsFile = new File(applicationSettingsDirectory);
+        File settingsFile = new File(applicationSettingsDirectory, SETTINGS_FILE_NAME);
         if (settingsFile.exists() && settingsFile.canRead()) {
             Reader reader = new FileReader(settingsFile);
             Gson gson = new GsonBuilder().create();
