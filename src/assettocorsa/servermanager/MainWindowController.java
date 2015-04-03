@@ -1,8 +1,8 @@
 package assettocorsa.servermanager;
 
 import assettocorsa.servermanager.model.DriverOnRoster;
+import assettocorsa.servermanager.model.DriverRosterImpl;
 import assettocorsa.servermanager.model.DriverRoster;
-import assettocorsa.servermanager.model.IDriverRoster;
 import assettocorsa.servermanager.ui.listview.DriverRosterListCellCallback;
 import com.sun.istack.internal.Nullable;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -26,7 +26,7 @@ public class MainWindowController implements Initializable {
      * Data storage handler for the driver roster.
      * Injecting this would be best.
      */
-    private IDriverRoster driverRoster;
+    private DriverRoster driverRoster;
 
     @Nullable
     private DriverOnRoster selectedDriverOnDriverRoster;
@@ -41,7 +41,7 @@ public class MainWindowController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initialisePropertiesAndBindings();
-        driverRoster = new DriverRoster();
+        driverRoster = new DriverRosterImpl();
         driverRoster.load();
         // TODO Try catch IOException on failed load goes here
 
