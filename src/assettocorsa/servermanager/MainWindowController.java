@@ -1,9 +1,9 @@
 package assettocorsa.servermanager;
 
 import assettocorsa.servermanager.model.*;
-import assettocorsa.servermanager.services.AppSettingsServiceImpl;
 import assettocorsa.servermanager.ui.listview.DriverRosterListCellCallback;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -12,7 +12,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Window;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -24,6 +28,10 @@ public class MainWindowController implements Initializable {
     public Button acLocationButton;
     public TextField outputLocationTextField;
     public TextField acLocationTextField;
+    /**
+     * Added the rootPane in order to get access to it's parent, the Stage.
+     */
+    public BorderPane rootPane;
     /**
      * Data storage handler for the driver roster.
      * Injecting this would be best.
@@ -39,9 +47,9 @@ public class MainWindowController implements Initializable {
     private SimpleBooleanProperty driverInfoInputsEnabled;
     private AppSettings appSettings;
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         initialisePropertiesAndBindings();
 
         driverRoster = new DriverRosterImpl();
@@ -60,6 +68,7 @@ public class MainWindowController implements Initializable {
 
     /**
      * Bindings to the AppSettings Property to the UI
+     *
      * @param appSettings
      */
     private void initaliseBindingsToAppSettings(AppSettings appSettings) {
@@ -76,7 +85,6 @@ public class MainWindowController implements Initializable {
         driverInfoInputsEnabled = new SimpleBooleanProperty(true);
         driverInfoNameTextField.editableProperty().bindBidirectional(driverInfoInputsEnabled);
         driverInfoGuidTextField.editableProperty().bindBidirectional(driverInfoInputsEnabled);
-
 
 
     }
@@ -158,15 +166,38 @@ public class MainWindowController implements Initializable {
 
     /**
      * Called App settings to set the output dir
+     *
      * @param actionEvent
      */
     public void selectOutputDir(ActionEvent actionEvent) {
+        appSettingsDirChooser("Select Output Folder", appSettings.exportDirectoryProperty());
     }
 
     /**
      * Called from app settings to set the assetto corsa dir
+     *
      * @param actionEvent
      */
     public void selectAcLocation(ActionEvent actionEvent) {
+        appSettingsDirChooser("Select Assetto Corsa Folder", appSettings.assettoCorsaDirectoryProperty());
+    }
+
+    /**
+     * Opern a dir chooser and update the supplied property if a selection is made.
+     * @param chooserTitle
+     * @param propertyToUpdate
+     */
+    private void appSettingsDirChooser(String chooserTitle, StringProperty propertyToUpdate) {
+        Window window = rootPane.getScene().getWindow();
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle(chooserTitle);
+        File inputDir = new File(propertyToUpdate.getValue());
+        if (inputDir.exists())
+            directoryChooser.setInitialDirectory(inputDir);
+        File selectedFile = directoryChooser.showDialog(window);
+        if (selectedFile != null) {
+            // selection made
+            propertyToUpdate.setValue(selectedFile.getAbsolutePath());
+        }
     }
 }

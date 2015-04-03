@@ -10,7 +10,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="assettocorsa.servermanager.MainWindowController">
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="assettocorsa.servermanager.MainWindowController">
    <left>
       <TitledPane animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Races" BorderPane.alignment="CENTER">
          <content>
@@ -65,7 +65,7 @@
                         <GridPane layoutX="14.0" layoutY="30.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                           <columnConstraints>
                             <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="30.0" />
-                            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="70.0" prefWidth="100.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -77,13 +77,13 @@
                               <Label text="Default Output Dir" GridPane.rowIndex="1" />
                               <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                                  <children>
-                                    <TextField fx:id="acLocationTextField" promptText="location of Assetto Corsa" />
+                                    <TextField fx:id="acLocationTextField" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="location of Assetto Corsa" HBox.hgrow="ALWAYS" />
                                     <Button mnemonicParsing="false" onAction="#selectAcLocation" text="Folder" />
                                  </children>
                               </HBox>
                               <HBox layoutX="131.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <children>
-                                    <TextField fx:id="outputLocationTextField" promptText="location to output configs" />
+                                    <TextField fx:id="outputLocationTextField" promptText="location to output configs" HBox.hgrow="ALWAYS" />
                                     <Button mnemonicParsing="false" onAction="#selectOutputDir" text="Folder" />
                                  </children>
                               </HBox>
