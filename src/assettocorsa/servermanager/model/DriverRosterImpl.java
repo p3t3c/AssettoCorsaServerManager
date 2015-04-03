@@ -21,7 +21,7 @@ public class DriverRosterImpl implements DriverRoster {
     private final IDriverRosterService driverRosterSerice;
 
     public DriverRosterImpl() {
-        driverRosterSerice = new DriverRosterServiceTestImpl();
+        driverRosterSerice = new DriverRosterServiceTestImpl(); // TODO Injection required
         // Extractor function binds the name and guid properties to the ObserableList, it will change when they do
         listOfDrivers = FXCollections.observableArrayList(driver -> new Observable[]{driver.driverNameProperty(), driver.guidProperty()});
     }
