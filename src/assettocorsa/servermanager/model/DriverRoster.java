@@ -1,68 +1,36 @@
 package assettocorsa.servermanager.model;
 
-import assettocorsa.servermanager.services.DriverRosterServiceTestImpl;
-import assettocorsa.servermanager.services.IDriverRosterService;
-import assettocorsa.servermanager.services.data.Driver;
-import assettocorsa.servermanager.services.data.DriverBuilder;
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
-
 /**
- * Created by pete on 30/03/2015.
+ * Created by pete on 31/03/2015.
+ * TODO separate this into the service parts pure model and UI mediation ObservaleList etc.
  */
-public class DriverRoster implements IDriverRoster {
-    ObservableList<DriverOnRoster> listOfDrivers;
-    private final IDriverRosterService driverRosterSerice;
+public interface DriverRoster {
+    /**
+     * Load Drivers from storage.
+     */
+    void load();
 
-    public DriverRoster() {
-        driverRosterSerice = new DriverRosterServiceTestImpl();
-        // Extractor function binds the name and guid properties to the ObserableList, it will change when they do
-        listOfDrivers = FXCollections.observableArrayList(driver -> new Observable[]{driver.driverNameProperty(), driver.guidProperty()});
-    }
+    /**
+     * Persist the driver data to storage.
+     */
+    void store();
 
-    @Override
-    public void load() {
-        driverRosterSerice.loadDrivers();
+    ObservableList<DriverOnRoster> getListOfDrivers();
 
-        List<Driver> driverList = new ArrayList<Driver>();
-        driverRosterSerice.fetchListOfDrivers(driverList);
-        List<DriverOnRoster> driversOnRoster = driverList.stream().map(driver -> new DriverOnRoster(driver.getDriverName(), driver.getGuid())).collect(toList());
-        listOfDrivers.clear();
-        listOfDrivers.addAll(driversOnRoster);
-    }
+    /**
+     * Create a new Driver object add it to the end of the list.
+     * The new driver object will have empty values.
+     * @return the newly created and added Driver
+     */
+    DriverOnRoster createNewDriver();
 
-    @Override
-    public void store() {
-        DriverBuilder builder = new DriverBuilder();
-        List<Driver> driverDataToStore = listOfDrivers.stream().map(driverOnRoster -> {
-            builder.setDriverName(driverOnRoster.getDriverName());
-            builder.setGuid(driverOnRoster.getGuid());
-            return builder.createDriver();
-        }).collect(toList());
-        driverRosterSerice.setListOfDrivers(driverDataToStore);
-        driverRosterSerice.storeDrivers();
-    }
+    /**
+     * Remove the Driver from the model store.
+     * @param driver to remove.
+     */
+    void removeDriver(DriverOnRoster driver);
 
-    @Override
-    public ObservableList<DriverOnRoster> getListOfDrivers() {
-        return listOfDrivers;
-    }
 
-    @Override
-    public DriverOnRoster createNewDriver() {
-        DriverOnRoster newDriver = new DriverOnRoster();
-        listOfDrivers.add(newDriver);
-        return newDriver;
-    }
-
-    @Override
-    public void removeDriver(DriverOnRoster driver) {
-        listOfDrivers.remove(driver);
-    }
 }
