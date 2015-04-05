@@ -6,7 +6,7 @@ import javafx.beans.property.StringProperty;
 /**
  * Created by pete on 4/04/2015.
  */
-public class RaceAndServerSettings {
+public class RaceSettings {
 
     /**
      * Name to be displayed on a list of races.
@@ -18,7 +18,7 @@ public class RaceAndServerSettings {
      */
     private StringProperty serverName;
 
-    RaceAndServerSettings() {
+    RaceSettings() {
         raceName = new SimpleStringProperty();
         serverName = new SimpleStringProperty();
     }
