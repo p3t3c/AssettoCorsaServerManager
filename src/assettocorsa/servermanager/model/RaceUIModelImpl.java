@@ -31,11 +31,13 @@ public class RaceUIModelImpl implements RaceUIModel {
     }
 
     @Override
-    public void createNewRaceSettings() {
+    public RaceSettings createNewRaceSettings() {
         RaceSettings raceSettings = new RaceSettings();
         raceSettings.raceNameProperty().set("New Race");
 
         raceSettingsObseravleList.add(raceSettings);
+
+        return raceSettings;
     }
 
     @Override

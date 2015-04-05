@@ -25,7 +25,7 @@ public interface RaceUIModel {
      * Create new raceSettings and add it to the raceSettingsList.
      * Creation of the new race settings does not automaticly the currentRaceSettings.
      */
-    public void createNewRaceSettings();
+    public RaceSettings createNewRaceSettings();
 
     /**
      * RaceSettings parameter is set to become the current RaceSettings.
