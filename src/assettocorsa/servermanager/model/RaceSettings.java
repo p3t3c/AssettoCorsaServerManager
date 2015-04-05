@@ -39,4 +39,8 @@ public class RaceSettings {
         return serverName;
     }
 
+    public void cloneFrom(RaceSettings otherRaceSettings) {
+        raceName.setValue(otherRaceSettings.getRaceName());
+        serverName.setValue(otherRaceSettings.getServerName());
+    }
 }
