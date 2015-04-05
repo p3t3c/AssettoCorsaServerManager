@@ -7,11 +7,11 @@ import javafx.collections.ObservableList;
  */
 public interface RaceUIModel {
 
-    public void load();
+    void load();
 
-    public void store();
+    void store();
 
-    public ObservableList<RaceSettings> raceSettingsListProperty();
+    ObservableList<RaceSettings> raceSettingsListProperty();
 
     /**
      * Binding to this data will allow the observers to be notified of all changes to race and server settings.
@@ -19,18 +19,31 @@ public interface RaceUIModel {
      *
      * @return an object that can be bound to get updates of race and server settings.
      */
-    public RaceSettings selectedRaceSettingsProperty();
+    RaceSettings selectedRaceSettingsProperty();
 
     /**
      * Create new raceSettings and add it to the raceSettingsList.
      * Creation of the new race settings does not automaticly the currentRaceSettings.
      */
-    public RaceSettings createNewRaceSettings();
+    RaceSettings createNewRaceSettings();
 
     /**
      * RaceSettings parameter is set to become the current RaceSettings.
      * The RaceSettings parameter must be in the list of RaceSettings. If it is not in the list then no selection occurs.
      * @param raceSettings that will be set as the current RaceSettings if this paramter s in the raceSettingsList.
      */
-    public void selectRaceSettings(RaceSettings raceSettings);
+    void selectRaceSettings(RaceSettings raceSettings);
+
+    /**
+     * Create a new RaceSettings and clone the paramter settings into it
+     * @param raceSettings object to clone from.
+     */
+    void cloneRaceSettings(RaceSettings raceSettings);
+
+    /**
+     * Remove the race settings.
+     * @param raceSettings RaceSettings to be removed.
+     */
+    void deleteRaceSettings(RaceSettings raceSettings);
+
 }
