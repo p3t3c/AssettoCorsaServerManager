@@ -2,6 +2,7 @@ package assettocorsa.servermanager;
 
 import assettocorsa.servermanager.model.*;
 import assettocorsa.servermanager.ui.listview.DriverRosterListCellCallback;
+import assettocorsa.servermanager.ui.listview.RaceSettingListCellCallback;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -33,6 +34,15 @@ public class MainWindowController implements Initializable {
      */
     public BorderPane rootPane;
     /**
+     * List of all the races that have been configured.
+     */
+    public ListView<RaceSettings> raceListView;
+
+    /* Service config panel fields */
+    public TextField serverNameTextField;
+    public TextField serverPasswordTextField;
+    public TextField adminPasswordTextField;
+    /**
      * Data storage handler for the driver roster.
      * Injecting this would be best.
      */
@@ -46,6 +56,8 @@ public class MainWindowController implements Initializable {
      */
     private SimpleBooleanProperty driverInfoInputsEnabled;
     private AppSettings appSettings;
+
+    private RaceUIModel raceUIModel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -61,8 +73,22 @@ public class MainWindowController implements Initializable {
         appSettings = new AppSettingsImpl();
         appSettings.loadAppSettings();
 
+        // TODO inject this
+        raceUIModel = new RaceUIModelImpl();
+        initiliseBindingToRaceUIModel();
+
         intialiseDriverRosterListView(driverList);
         initaliseBindingsToAppSettings(appSettings);
+    }
+
+    private void initiliseBindingToRaceUIModel() {
+        raceListView.setCellFactory(new RaceSettingListCellCallback());
+        raceListView.setItems(raceUIModel.raceSettingsListProperty());
+        raceListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        RaceSettings raceSettings = raceUIModel.selectedRaceSettingsProperty();
+        serverNameTextField.textProperty().bindBidirectional(raceSettings.serverNameProperty());
+        // And the rest...
     }
 
     /**
@@ -181,6 +207,7 @@ public class MainWindowController implements Initializable {
 
     /**
      * Opern a dir chooser and update the supplied property if a selection is made.
+     *
      * @param chooserTitle
      * @param propertyToUpdate
      */
@@ -199,11 +226,27 @@ public class MainWindowController implements Initializable {
     }
 
     public void newRaceAction(ActionEvent actionEvent) {
+        RaceSettings rs = raceUIModel.createNewRaceSettings();
+        raceUIModel.selectRaceSettings(rs);
     }
 
     public void cloneRaceAction(ActionEvent actionEvent) {
+        raceUIModel.cloneRaceSettings(getSelectedRaceSettings());
+        raceUIModel.store();
     }
 
+
     public void deleteRaceAction(ActionEvent actionEvent) {
+        raceUIModel.deleteRaceSettings(getSelectedRaceSettings());
+        raceUIModel.store();
+    }
+
+    public void selectRaceAction(Event event) {
+        raceUIModel.store(); // save changes on switch.
+        raceUIModel.selectRaceSettings(getSelectedRaceSettings());
+    }
+
+    private RaceSettings getSelectedRaceSettings() {
+        return raceListView.getSelectionModel().getSelectedItems().get(0);
     }
 }
