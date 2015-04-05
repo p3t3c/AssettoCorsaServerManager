@@ -197,4 +197,13 @@ public class MainWindowController implements Initializable {
             propertyToUpdate.setValue(selectedFile.getAbsolutePath());
         }
     }
+
+    public void newRaceAction(ActionEvent actionEvent) {
+    }
+
+    public void cloneRaceAction(ActionEvent actionEvent) {
+    }
+
+    public void deleteRaceAction(ActionEvent actionEvent) {
+    }
 }
