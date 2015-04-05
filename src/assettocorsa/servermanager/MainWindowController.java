@@ -49,7 +49,6 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         initialisePropertiesAndBindings();
 
         driverRoster = new DriverRosterImpl();
@@ -85,8 +84,6 @@ public class MainWindowController implements Initializable {
         driverInfoInputsEnabled = new SimpleBooleanProperty(true);
         driverInfoNameTextField.editableProperty().bindBidirectional(driverInfoInputsEnabled);
         driverInfoGuidTextField.editableProperty().bindBidirectional(driverInfoInputsEnabled);
-
-
     }
 
     /**
