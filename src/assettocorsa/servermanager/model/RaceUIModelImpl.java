@@ -27,7 +27,8 @@ public class RaceUIModelImpl implements RaceUIModel {
 
     @Override
     public void store() {
-
+        currentRaceSettings.cloneFrom(selectedRaceSettings);
+        // TODO send data to service layer to store.
     }
 
     @Override
@@ -43,11 +44,7 @@ public class RaceUIModelImpl implements RaceUIModel {
     @Override
     public void selectRaceSettings(RaceSettings nextRaceSettings) {
         if (raceSettingsObseravleList.contains(nextRaceSettings)) {
-            selectedRaceSettings.raceNameProperty().unbindBidirectional(currentRaceSettings);
-            selectedRaceSettings.raceNameProperty().bindBidirectional(nextRaceSettings.raceNameProperty());
-
-            selectedRaceSettings.serverNameProperty().unbindBidirectional(currentRaceSettings);
-            selectedRaceSettings.serverNameProperty().bindBidirectional(nextRaceSettings.serverNameProperty());
+            selectedRaceSettings.cloneFrom(nextRaceSettings);
 
             currentRaceSettings = nextRaceSettings;
         }
