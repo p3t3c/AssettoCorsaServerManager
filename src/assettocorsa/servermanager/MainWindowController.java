@@ -226,6 +226,7 @@ public class MainWindowController implements Initializable {
     }
 
     public void newRaceAction(ActionEvent actionEvent) {
+        raceUIModel.store(); // Store any of the current settings
         RaceSettings rs = raceUIModel.createNewRaceSettings();
         raceUIModel.selectRaceSettings(rs);
     }

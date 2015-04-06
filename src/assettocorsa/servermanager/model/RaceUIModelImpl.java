@@ -9,13 +9,17 @@ import javafx.collections.ObservableList;
  */
 public class RaceUIModelImpl implements RaceUIModel {
     private final ObservableList<RaceSettings> raceSettingsObseravleList;
-    private final RaceSettings selectedRaceSettings;
+    private RaceSettings selectedRaceSettings;
     private RaceSettings currentRaceSettings;
 
     public RaceUIModelImpl() {
         // Exctactor function is probably going to get fairly large.
         raceSettingsObseravleList = FXCollections.observableArrayList(raceSettings -> new Observable[]{raceSettings.raceNameProperty(), raceSettings.serverNameProperty()});
 
+        initaliseRaceSettings();
+    }
+
+    private void initaliseRaceSettings() {
         selectedRaceSettings = new RaceSettings();
         currentRaceSettings = selectedRaceSettings; // initial value but not bound, wait for user(UI) to choose.
     }
@@ -47,6 +51,28 @@ public class RaceUIModelImpl implements RaceUIModel {
             selectedRaceSettings.cloneFrom(nextRaceSettings);
 
             currentRaceSettings = nextRaceSettings;
+        }
+    }
+
+    @Override
+    public void cloneRaceSettings(RaceSettings raceSettings) {
+        int index = raceSettingsObseravleList.indexOf(raceSettings);
+        RaceSettings clonedRaceSettings = new RaceSettings();
+        clonedRaceSettings.cloneFrom(raceSettings);
+        clonedRaceSettings.raceNameProperty().set("Copy of " + clonedRaceSettings.getRaceName());
+        raceSettingsObseravleList.add(index, clonedRaceSettings);
+    }
+
+    @Override
+    public void deleteRaceSettings(RaceSettings raceSettings) {
+        if (raceSettingsObseravleList.contains(raceSettings)) {
+            raceSettingsObseravleList.remove(raceSettings);
+            if (!raceSettingsObseravleList.isEmpty()) {
+                selectRaceSettings(raceSettingsObseravleList.get(0));
+                store();
+            } else {
+                initaliseRaceSettings();
+            }
         }
     }
 
