@@ -14,6 +14,7 @@ public class RaceUIModelImpl implements RaceUIModel {
 
     public RaceUIModelImpl() {
         // Exctactor function is probably going to get fairly large.
+        // RaceUIModel.class.getFields() might work see http://stackoverflow.com/questions/19977600/javafx-8-custom-listview-cells-its-evil right at the end of the answer
         raceSettingsObseravleList = FXCollections.observableArrayList(raceSettings -> new Observable[]{raceSettings.raceNameProperty(), raceSettings.serverNameProperty()});
 
         initaliseRaceSettings();
