@@ -17,7 +17,7 @@ import static java.util.stream.Collectors.toList;
  * Created by pete on 30/03/2015.
  */
 public class DriverRosterImpl implements DriverRoster {
-    ObservableList<DriverOnRoster> listOfDrivers;
+    private ObservableList<DriverOnRoster> listOfDrivers;
     private final IDriverRosterService driverRosterSerice;
 
     public DriverRosterImpl() {
