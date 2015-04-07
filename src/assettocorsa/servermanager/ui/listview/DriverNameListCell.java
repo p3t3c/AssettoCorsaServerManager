@@ -12,8 +12,8 @@ public class DriverNameListCell extends ListCell<DriverOnRoster> {
     protected void updateItem(DriverOnRoster driver, boolean empty) {
         super.updateItem(driver, empty);
 
-        if (empty) {
-            setText("");
+        if (empty || driver == null) {
+            setText(null);
         } else {
             setText(driver.getDriverName());
         }

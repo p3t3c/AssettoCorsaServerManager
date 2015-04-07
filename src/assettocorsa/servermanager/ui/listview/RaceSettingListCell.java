@@ -12,8 +12,8 @@ public class RaceSettingListCell extends ListCell<RaceSettings> {
     protected void updateItem(RaceSettings raceSettings, boolean empty) {
         super.updateItem(raceSettings, empty);
 
-        if (empty) {
-            setText("");
+        if (empty || raceSettings == null) {
+            setText(null);
         } else {
             setText(raceSettings.getRaceName());
         }
