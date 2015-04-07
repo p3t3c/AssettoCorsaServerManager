@@ -2,7 +2,6 @@ package assettocorsa.servermanager;
 
 import assettocorsa.servermanager.model.*;
 import assettocorsa.servermanager.ui.listview.DriverOnRosterNameConverter;
-import assettocorsa.servermanager.ui.listview.DriverRosterListCellCallback;
 import assettocorsa.servermanager.ui.listview.RaceSettingsNameConverter;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.StringProperty;
