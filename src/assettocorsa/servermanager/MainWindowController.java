@@ -1,6 +1,7 @@
 package assettocorsa.servermanager;
 
 import assettocorsa.servermanager.model.*;
+import assettocorsa.servermanager.ui.listview.DriverOnRosterNameConverter;
 import assettocorsa.servermanager.ui.listview.DriverRosterListCellCallback;
 import assettocorsa.servermanager.ui.listview.RaceSettingsNameConverter;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -9,7 +10,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
@@ -27,7 +27,6 @@ public class MainWindowController implements Initializable {
     public ListView<DriverOnRoster> driverRosterListView;
     public TextField driverInfoNameTextField;
     public TextField driverInfoGuidTextField;
-    public Button acLocationButton;
     public TextField outputLocationTextField;
     public TextField acLocationTextField;
     /**
@@ -119,7 +118,7 @@ public class MainWindowController implements Initializable {
      * @param driverList
      */
     private void intialiseDriverRosterListView(ObservableList<DriverOnRoster> driverList) {
-        driverRosterListView.setCellFactory(new DriverRosterListCellCallback());
+        driverRosterListView.setCellFactory(TextFieldListCell.forListView(new DriverOnRosterNameConverter()));
         driverRosterListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         driverRosterListView.setItems(driverList);
 
