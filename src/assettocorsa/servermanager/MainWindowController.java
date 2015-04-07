@@ -2,7 +2,7 @@ package assettocorsa.servermanager;
 
 import assettocorsa.servermanager.model.*;
 import assettocorsa.servermanager.ui.listview.DriverRosterListCellCallback;
-import assettocorsa.servermanager.ui.listview.RaceSettingListCellCallback;
+import assettocorsa.servermanager.ui.listview.RaceSettingsNameConverter;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Window;
@@ -82,7 +83,7 @@ public class MainWindowController implements Initializable {
     }
 
     private void initiliseBindingToRaceUIModel() {
-        raceListView.setCellFactory(new RaceSettingListCellCallback());
+        raceListView.setCellFactory(TextFieldListCell.forListView(new RaceSettingsNameConverter()));
         raceListView.setItems(raceUIModel.raceSettingsListProperty());
         raceListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
@@ -242,12 +243,23 @@ public class MainWindowController implements Initializable {
         raceUIModel.store();
     }
 
-    public void selectRaceAction(Event event) {
+    public void selectRaceAction(@SuppressWarnings("UnusedParameters") Event event) {
         raceUIModel.store(); // save changes on switch.
         raceUIModel.selectRaceSettings(getSelectedRaceSettings());
     }
 
     private RaceSettings getSelectedRaceSettings() {
         return raceListView.getSelectionModel().getSelectedItems().get(0);
+    }
+
+    public void raceListEditCommit(ListView.EditEvent<RaceSettings> raceListEditEvent) {
+        RaceSettings partialRaceSettings = raceListEditEvent.getNewValue();
+        /*
+        We expect this to be the RaceSettings object created by a StringConverter installed into the list view.
+        Expect that it only contains the race name because that is all that is edited via the list. Take the name and
+        assign it to the currently selected item and throw away the result.
+        */
+        raceUIModel.selectedRaceSettingsProperty().setRaceName(partialRaceSettings.getRaceName());
+        raceUIModel.store(); // Store and trigger change in observable list, which updates ui.
     }
 }

@@ -18,7 +18,7 @@ public class RaceSettings {
      */
     private StringProperty serverName;
 
-    RaceSettings() {
+    public RaceSettings() {
         raceName = new SimpleStringProperty();
         serverName = new SimpleStringProperty();
     }
@@ -42,5 +42,9 @@ public class RaceSettings {
     public void cloneFrom(RaceSettings otherRaceSettings) {
         raceName.setValue(otherRaceSettings.getRaceName());
         serverName.setValue(otherRaceSettings.getServerName());
+    }
+
+    public void setRaceName(String raceName) {
+        this.raceName.setValue(raceName);
     }
 }
