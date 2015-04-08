@@ -1,15 +1,18 @@
 package assettocorsa.servermanager.services.data;
 
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Path;
 
 public class ACTrackDataBuilder {
+    public static final URL DEFAULT_PREVIEW_URL = ACTrackDataBuilder.class.getResource("/default_preview.png");
+    public static final URL DEFAULT_OUTLINE_URL = ACTrackDataBuilder.class.getResource("/default_outline.png");
     private String trackName;
     private String trackConfiguration;
     private Integer numberOfPitBoxes;
     private Path trackDirLocation;
-    private Path previewImageFile = new File(getClass().getResource("/default_preview.png").getFile()).toPath();
-    private Path outlineImageFile = new File(getClass().getResource("/default_outline.png").getFile()).toPath();
+    private Path previewImageFile = new File(DEFAULT_PREVIEW_URL.getFile()).toPath();
+    private Path outlineImageFile = new File(DEFAULT_OUTLINE_URL.getFile()).toPath();
 
     public ACTrackDataBuilder setTrackName(String trackName) {
         this.trackName = trackName;
