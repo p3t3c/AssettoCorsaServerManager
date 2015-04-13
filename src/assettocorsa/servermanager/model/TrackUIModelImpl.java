@@ -23,7 +23,7 @@ public class TrackUIModelImpl implements TrackUIModel {
     }
 
     private void load(String pathToACDirectory) {
-        trackModelList.removeAll();
+        trackModelList.clear();
         List<ACTrackData> trackDataList = trackService.getAllTrackData(pathToACDirectory);
         for (ACTrackData acTrackData : trackDataList) {
             trackModelList.add(new TrackModelImpl(acTrackData));
