@@ -40,7 +40,45 @@
         <tabs>
           <Tab closable="false" text="Race Config">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" />
+              <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
+                     <children>
+                        <Accordion maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                          <panes>
+                            <TitledPane animated="false" text="Track">
+                                 <content>
+                                    <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                       <center>
+                                          <TilePane fx:id="trackListTilePane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tileAlignment="TOP_LEFT" BorderPane.alignment="CENTER" />
+                                       </center>
+                                       <bottom>
+                                          <CheckBox mnemonicParsing="false" text="Show Course Outline" BorderPane.alignment="CENTER" />
+                                       </bottom>
+                                    </BorderPane>
+                                 </content>
+                              </TitledPane>
+                            <TitledPane animated="false" text="Cars" />
+                              <TitledPane animated="false" text="Sessions">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                </content>
+                              </TitledPane>
+                              <TitledPane animated="false" text="Other">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                             <children>
+                                                <Label text="Time" />
+                                                <Slider majorTickUnit="30.0" max="1759.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" min="800.0" minorTickCount="10" showTickMarks="true" value="1200.0" VBox.vgrow="ALWAYS" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </TitledPane>
+                          </panes>
+                        </Accordion>
+                     </children></AnchorPane>
             </content>
           </Tab>
           <Tab closable="false" text="Entry List">

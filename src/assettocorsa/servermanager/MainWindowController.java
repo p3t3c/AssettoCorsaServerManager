@@ -3,21 +3,25 @@ package assettocorsa.servermanager;
 import assettocorsa.servermanager.model.*;
 import assettocorsa.servermanager.ui.listview.DriverOnRosterNameConverter;
 import assettocorsa.servermanager.ui.listview.RaceSettingsNameConverter;
+import assettocorsa.servermanager.ui.trackview.TrackViewControl;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.TilePane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Window;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -41,6 +45,7 @@ public class MainWindowController implements Initializable {
     public TextField serverNameTextField;
     public TextField serverPasswordTextField;
     public TextField adminPasswordTextField;
+    public TilePane trackListTilePane;
     /**
      * Data storage handler for the driver roster.
      * Injecting this would be best.
@@ -57,6 +62,8 @@ public class MainWindowController implements Initializable {
     private AppSettings appSettings;
 
     private RaceUIModel raceUIModel;
+    private TrackUIModel trackUIModel;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -74,11 +81,18 @@ public class MainWindowController implements Initializable {
 
         // TODO inject this
         raceUIModel = new RaceUIModelImpl();
+
+        // TODO inject this
+        trackUIModel = new TrackUIModelImpl(appSettings);
+
         initiliseBindingToRaceUIModel();
 
         intialiseDriverRosterListView(driverList);
         initaliseBindingsToAppSettings(appSettings);
+
+        initaliseTrackDisplay(trackUIModel);
     }
+
 
     private void initiliseBindingToRaceUIModel() {
         raceListView.setCellFactory(TextFieldListCell.forListView(new RaceSettingsNameConverter()));
@@ -121,6 +135,26 @@ public class MainWindowController implements Initializable {
         driverRosterListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         driverRosterListView.setItems(driverList);
 
+    }
+
+
+    /**
+     * Create the TrackViewControls and add them.
+     * Perform bindings. The bindings are from model to control (unidirectional) as the data is read only.
+     *
+     * @param trackUIModel
+     */
+    private void initaliseTrackDisplay(TrackUIModel trackUIModel) {
+        ObservableList<TrackModel> trackModels = trackUIModel.trackModelListProperty();
+        for (TrackModel track : trackModels) {
+            TrackViewControl trackViewControl = new TrackViewControl();
+
+            trackViewControl.trackNameProperty().bind(track.trackNameProperty());
+            trackViewControl.trackImageProperty().bind(track.trackImageProperty());
+            trackViewControl.trackPitboxesProperty().bind(track.trackPitboxesProperty());
+
+            trackListTilePane.getChildren().add(trackViewControl);
+        }
     }
 
     /**
