@@ -6,11 +6,12 @@ import assettocorsa.servermanager.ui.listview.RaceSettingsNameConverter;
 import assettocorsa.servermanager.ui.trackview.TrackViewControl;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
@@ -21,9 +22,13 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Window;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 public class MainWindowController implements Initializable {
 
@@ -77,20 +82,21 @@ public class MainWindowController implements Initializable {
 
         // TODO inject this
         appSettings = new AppSettingsImpl();
+        // TODO inject this
+        trackUIModel = new TrackUIModelImpl(appSettings);
+
+        initaliseBindingsToAppSettings(appSettings);
+        initaliseTrackDisplay(trackUIModel);
+
+        // Do the load after all other users so they get the first update to the properties
         appSettings.loadAppSettings();
 
         // TODO inject this
         raceUIModel = new RaceUIModelImpl();
 
-        // TODO inject this
-        trackUIModel = new TrackUIModelImpl(appSettings);
-
         initiliseBindingToRaceUIModel();
 
         intialiseDriverRosterListView(driverList);
-        initaliseBindingsToAppSettings(appSettings);
-
-        initaliseTrackDisplay(trackUIModel);
     }
 
 
@@ -146,15 +152,33 @@ public class MainWindowController implements Initializable {
      */
     private void initaliseTrackDisplay(TrackUIModel trackUIModel) {
         ObservableList<TrackModel> trackModels = trackUIModel.trackModelListProperty();
-        for (TrackModel track : trackModels) {
-            TrackViewControl trackViewControl = new TrackViewControl();
+        // Listener that adds and removes TrackViewControls from the tile view for tracks
+        trackModels.addListener(new ListChangeListener<TrackModel>() {
+            @Override
+            public void onChanged(Change<? extends TrackModel> change) {
+                change.next();
+                if (change.wasRemoved()) {
+                    List<? extends TrackModel> removedTracks = change.getRemoved();
+                    Set<String> removedTrackNames = removedTracks.stream().map(TrackModel::trackNameProperty).map(StringProperty::getValue).collect(toSet());
+                    List<Node> nodesToRemove = trackListTilePane.getChildren().stream().filter(node -> node instanceof TrackViewControl && removedTrackNames.contains(((TrackViewControl) node).trackNameProperty().getValue())).
+                            collect(toList());
+                    trackListTilePane.getChildren().removeAll(nodesToRemove);
+                }
 
-            trackViewControl.trackNameProperty().bind(track.trackNameProperty());
-            trackViewControl.trackImageProperty().bind(track.trackImageProperty());
-            trackViewControl.trackPitboxesProperty().bind(track.trackPitboxesProperty());
+                if (change.wasAdded()) {
+                    List<? extends TrackModel> addedTrackModels = change.getAddedSubList();
+                    addedTrackModels.forEach(trackModel -> {
+                        TrackViewControl trackViewControl = new TrackViewControl();
 
-            trackListTilePane.getChildren().add(trackViewControl);
-        }
+                        trackViewControl.trackNameProperty().bind(trackModel.trackNameProperty());
+                        trackViewControl.trackImageProperty().bind(trackModel.trackImageProperty());
+                        trackViewControl.trackPitboxesProperty().bind(trackModel.trackPitboxesProperty());
+
+                        trackListTilePane.getChildren().add(trackViewControl);
+                    });
+                }
+            }
+        });
     }
 
     /**
