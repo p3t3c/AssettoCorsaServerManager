@@ -40,19 +40,23 @@
         <tabs>
           <Tab closable="false" text="Race Config">
             <content>
-              <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
+              <AnchorPane>
                      <children>
-                        <Accordion maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                        <Accordion maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <panes>
-                            <TitledPane animated="false" text="Track">
+                            <TitledPane animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Track">
                                  <content>
                                     <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                                       <center>
-                                          <TilePane fx:id="trackListTilePane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tileAlignment="TOP_LEFT" BorderPane.alignment="CENTER" />
-                                       </center>
                                        <bottom>
                                           <CheckBox mnemonicParsing="false" text="Show Course Outline" BorderPane.alignment="CENTER" />
                                        </bottom>
+                                       <center>
+                                          <ScrollPane hbarPolicy="NEVER" prefViewportHeight="634.0" prefViewportWidth="787.0">
+                                             <content>
+                                                <TilePane fx:id="trackListTilePane" prefColumns="3" tileAlignment="TOP_LEFT" BorderPane.alignment="CENTER" />
+                                             </content>
+                                          </ScrollPane>
+                                       </center>
                                     </BorderPane>
                                  </content>
                               </TitledPane>
