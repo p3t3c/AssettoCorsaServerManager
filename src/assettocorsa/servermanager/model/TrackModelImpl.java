@@ -35,7 +35,6 @@ public class TrackModelImpl implements TrackModel {
     public void updateTrackImageProperty() {
         try {
             if (displayOutline) {
-
                 trackImageProperty().setValue(new Image(Files.newInputStream(acTrackData.getOutlineImageFile(), StandardOpenOption.READ)));
             } else {
                 trackImageProperty().setValue(new Image(Files.newInputStream(acTrackData.getPreviewImageFile(), StandardOpenOption.READ)));
