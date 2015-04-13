@@ -25,7 +25,7 @@ public class TrackModelImpl implements TrackModel {
 
     public TrackModelImpl(ACTrackData acTrackData) {
         this.acTrackData = acTrackData;
-        trackNameProperty = new SimpleStringProperty(acTrackData.getTrackName());
+        trackNameProperty = new SimpleStringProperty(getDisplayableTrackName());
         trackPitboxesProperty = new SimpleStringProperty(String.valueOf(acTrackData.getNumberOfPitBoxes()));
         trackImageProperty = new SimpleObjectProperty<Image>(new Image(ACTrackDataBuilder.DEFAULT_PREVIEW_URL.toExternalForm()));
         displayOutline = false;
@@ -63,5 +63,23 @@ public class TrackModelImpl implements TrackModel {
 
     ACTrackData getAcTrackData() {
         return acTrackData;
+    }
+
+    /**
+     * Displayable trackname is the track name and configuration if it has one.
+     *
+     * @return
+     */
+    private String getDisplayableTrackName() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(acTrackData.getTrackName());
+
+        String trackConfig = acTrackData.getTrackConfiguration();
+        if (trackConfig != null) {
+            sb.append(" ");
+            sb.append(trackConfig);
+        }
+
+        return sb.toString();
     }
 }
