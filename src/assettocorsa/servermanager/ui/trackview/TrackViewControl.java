@@ -42,4 +42,8 @@ public class TrackViewControl extends UserControl {
     public StringProperty trackPitboxesProperty() {
         return trackPitboxes.textProperty();
     }
+
+    public TrackModel getTrackModel() {
+        return trackModel;
+    }
 }
