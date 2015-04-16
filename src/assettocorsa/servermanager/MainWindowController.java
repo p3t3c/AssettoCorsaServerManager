@@ -158,9 +158,8 @@ public class MainWindowController implements Initializable {
             public void onChanged(Change<? extends TrackModel> change) {
                 change.next();
                 if (change.wasRemoved()) {
-                    List<? extends TrackModel> removedTracks = change.getRemoved();
-                    Set<String> removedTrackNames = removedTracks.stream().map(TrackModel::trackNameProperty).map(StringProperty::getValue).collect(toSet());
-                    List<Node> nodesToRemove = trackListTilePane.getChildren().stream().filter(node -> node instanceof TrackViewControl && removedTrackNames.contains(((TrackViewControl) node).trackNameProperty().getValue())).
+                    List<? extends TrackModel> removedTrackModels = change.getRemoved();
+                    List<Node> nodesToRemove = trackListTilePane.getChildren().stream().filter(node -> node instanceof TrackViewControl && removedTrackModels.contains(((TrackViewControl) node).getTrackModel())).
                             collect(toList());
                     trackListTilePane.getChildren().removeAll(nodesToRemove);
                 }
@@ -169,9 +168,6 @@ public class MainWindowController implements Initializable {
                     List<? extends TrackModel> addedTrackModels = change.getAddedSubList();
                     addedTrackModels.forEach(trackModel -> {
                         TrackViewControl trackViewControl = new TrackViewControl(trackModel);
-
-
-
                         trackListTilePane.getChildren().add(trackViewControl);
                     });
                 }
