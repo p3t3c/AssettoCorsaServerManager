@@ -2,10 +2,7 @@ package assettocorsa.servermanager.model;
 
 import assettocorsa.servermanager.services.data.ACTrackData;
 import assettocorsa.servermanager.services.data.ACTrackDataBuilder;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.scene.image.Image;
 
 import java.io.IOException;
@@ -19,6 +16,7 @@ public class TrackModelImpl implements TrackModel {
     private final StringProperty trackNameProperty;
     private final StringProperty trackPitboxesProperty;
     private final ObjectProperty<Image> trackImageProperty;
+    private final BooleanProperty selectedProperty;
     private ACTrackData acTrackData;
     private boolean displayOutline;
 
@@ -28,6 +26,7 @@ public class TrackModelImpl implements TrackModel {
         trackNameProperty = new SimpleStringProperty(getDisplayableTrackName());
         trackPitboxesProperty = new SimpleStringProperty(String.valueOf(acTrackData.getNumberOfPitBoxes()));
         trackImageProperty = new SimpleObjectProperty<Image>(new Image(ACTrackDataBuilder.DEFAULT_PREVIEW_URL.toExternalForm()));
+        selectedProperty = new SimpleBooleanProperty(false);
         displayOutline = false;
         updateTrackImageProperty();
     }
@@ -58,6 +57,11 @@ public class TrackModelImpl implements TrackModel {
     @Override
     public StringProperty trackPitboxesProperty() {
         return trackPitboxesProperty;
+    }
+
+    @Override
+    public BooleanProperty selectedProperty() {
+        return selectedProperty;
     }
 
     ACTrackData getAcTrackData() {

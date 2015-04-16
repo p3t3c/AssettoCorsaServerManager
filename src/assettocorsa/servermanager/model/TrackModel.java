@@ -1,5 +1,6 @@
 package assettocorsa.servermanager.model;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
@@ -14,4 +15,6 @@ public interface TrackModel {
     ObjectProperty<Image> trackImageProperty();
 
     StringProperty trackPitboxesProperty();
+
+    BooleanProperty selectedProperty();
 }
