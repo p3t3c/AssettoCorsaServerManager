@@ -10,8 +10,6 @@ public interface TrackUIModel {
 
     TrackModel getSelectedTrack();
 
-    void setSelectedTrack(TrackModel selectedTrackModel);
-
     /**
      * Switch the TrackModels to show the track outline.
      */
