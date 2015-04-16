@@ -84,4 +84,38 @@ public class ACTrackData {
                 ", outlineImageFile=" + outlineImageFile +
                 '}';
     }
+
+    @Override
+    /**
+     * Generated equals
+     */
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ACTrackData that = (ACTrackData) o;
+
+        if (!trackName.equals(that.trackName)) return false;
+        if (trackConfiguration != null ? !trackConfiguration.equals(that.trackConfiguration) : that.trackConfiguration != null)
+            return false;
+        if (!numberOfPitBoxes.equals(that.numberOfPitBoxes)) return false;
+        if (!trackDirLocation.equals(that.trackDirLocation)) return false;
+        if (!previewImageFile.equals(that.previewImageFile)) return false;
+        return outlineImageFile.equals(that.outlineImageFile);
+
+    }
+
+    @Override
+    /**
+     * Generated hashCode
+     */
+    public int hashCode() {
+        int result = trackName.hashCode();
+        result = 31 * result + (trackConfiguration != null ? trackConfiguration.hashCode() : 0);
+        result = 31 * result + numberOfPitBoxes.hashCode();
+        result = 31 * result + trackDirLocation.hashCode();
+        result = 31 * result + previewImageFile.hashCode();
+        result = 31 * result + outlineImageFile.hashCode();
+        return result;
+    }
 }

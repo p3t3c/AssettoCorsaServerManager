@@ -81,4 +81,27 @@ public class TrackModelImpl implements TrackModel {
 
         return sb.toString();
     }
+
+    @Override
+    /**
+     * Equals implementation follows that of the backing data ACTrackData.
+     */
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TrackModelImpl that = (TrackModelImpl) o;
+
+        return !(acTrackData != null ? !acTrackData.equals(that.acTrackData) : that.acTrackData != null);
+
+    }
+
+    @Override
+    /**
+     * Hashcode implementation follows that of the backing data ACTrackData.
+     * Warning: This means the hashCode() will be equivialent to the ACTrackData.
+     */
+    public int hashCode() {
+        return acTrackData != null ? acTrackData.hashCode() : 0;
+    }
 }
