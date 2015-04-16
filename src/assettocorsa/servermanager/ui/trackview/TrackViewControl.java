@@ -1,5 +1,6 @@
 package assettocorsa.servermanager.ui.trackview;
 
+import assettocorsa.servermanager.model.TrackModel;
 import com.github.benjamingale.usercontrol.UserControl;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
@@ -18,9 +19,17 @@ import java.io.IOException;
  */
 public class TrackViewControl extends UserControl {
 
+    private final TrackModel trackModel;
     public ImageView trackImage;
     public Label trackPitboxes;
     public Label trackName;
+
+    public TrackViewControl(TrackModel trackModel) {
+        this.trackModel = trackModel;
+        this.trackNameProperty().bind(trackModel.trackNameProperty());
+        this.trackImageProperty().bind(trackModel.trackImageProperty());
+        this.trackPitboxesProperty().bind(trackModel.trackPitboxesProperty());
+    }
 
     public StringProperty trackNameProperty() {
         return trackName.textProperty();

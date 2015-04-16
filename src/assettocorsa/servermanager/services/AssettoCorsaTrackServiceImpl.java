@@ -8,7 +8,6 @@ import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystems;
@@ -20,6 +19,9 @@ import java.util.Map;
 
 /**
  * Implementation of the service that does the work of extracting track information from assetto corsa.
+ * <p>
+ * This Service implementation holds no state. Each call to getAllTrackData() will create a new set of ACTrackData objects.
+ * </p>
  * Created by pete on 7/04/2015.
  */
 public class AssettoCorsaTrackServiceImpl implements AssettoCorsaTrackService {

@@ -168,11 +168,9 @@ public class MainWindowController implements Initializable {
                 if (change.wasAdded()) {
                     List<? extends TrackModel> addedTrackModels = change.getAddedSubList();
                     addedTrackModels.forEach(trackModel -> {
-                        TrackViewControl trackViewControl = new TrackViewControl();
+                        TrackViewControl trackViewControl = new TrackViewControl(trackModel);
 
-                        trackViewControl.trackNameProperty().bind(trackModel.trackNameProperty());
-                        trackViewControl.trackImageProperty().bind(trackModel.trackImageProperty());
-                        trackViewControl.trackPitboxesProperty().bind(trackModel.trackPitboxesProperty());
+
 
                         trackListTilePane.getChildren().add(trackViewControl);
                     });
