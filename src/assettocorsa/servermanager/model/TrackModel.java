@@ -17,4 +17,10 @@ public interface TrackModel {
     StringProperty trackPitboxesProperty();
 
     BooleanProperty selectedProperty();
+
+    /**
+     * Request that the selected property be changed
+     * @param selected value to set the selected flag to.
+     */
+    void setSelected(boolean selected);
 }

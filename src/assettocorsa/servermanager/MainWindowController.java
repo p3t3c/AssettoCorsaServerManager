@@ -92,7 +92,7 @@ public class MainWindowController implements Initializable {
         appSettings.loadAppSettings();
 
         // TODO inject this
-        raceUIModel = new RaceUIModelImpl();
+        raceUIModel = new RaceUIModelImpl(trackUIModel);
 
         initiliseBindingToRaceUIModel();
 

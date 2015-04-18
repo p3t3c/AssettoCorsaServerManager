@@ -1,5 +1,6 @@
 package assettocorsa.servermanager.model;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
 
 /**
@@ -8,7 +9,7 @@ import javafx.collections.ObservableList;
 public interface TrackUIModel {
     ObservableList<TrackModel> trackModelListProperty();
 
-    TrackModel getSelectedTrack();
+    ObjectProperty<TrackModel> selectedTrackModelProperty();
 
     /**
      * Switch the TrackModels to show the track outline.

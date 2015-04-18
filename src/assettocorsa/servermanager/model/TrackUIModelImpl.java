@@ -40,8 +40,8 @@ public class TrackUIModelImpl implements TrackUIModel {
 
 
     @Override
-    public TrackModel getSelectedTrack() {
-        return null;
+    public ObjectProperty<TrackModel> selectedTrackModelProperty() {
+        return selectedTrackModelProperty;
     }
 
     @Override

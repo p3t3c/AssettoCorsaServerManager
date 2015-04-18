@@ -9,19 +9,28 @@ import javafx.collections.ObservableList;
  */
 public class RaceUIModelImpl implements RaceUIModel {
     private final ObservableList<RaceSettings> raceSettingsObseravleList;
+    private final TrackUIModel trackUIModel;
+    /**
+     * Selected Race Settings is the RaceSettings that is modified by the UI.
+     * It is a clone from one of the items on the list. The data is only put back into the raceSettingsObservableList
+     * when store operation occurs.
+     */
     private RaceSettings selectedRaceSettings;
     private RaceSettings currentRaceSettings;
 
-    public RaceUIModelImpl() {
+    public RaceUIModelImpl(TrackUIModel trackUIModel) {
         // Exctactor function is probably going to get fairly large.
         // RaceUIModel.class.getFields() might work see http://stackoverflow.com/questions/19977600/javafx-8-custom-listview-cells-its-evil right at the end of the answer
         raceSettingsObseravleList = FXCollections.observableArrayList(raceSettings -> new Observable[]{raceSettings.raceNameProperty(), raceSettings.serverNameProperty()});
+        this.trackUIModel = trackUIModel;
 
         initaliseRaceSettings();
     }
 
     private void initaliseRaceSettings() {
         selectedRaceSettings = new RaceSettings();
+        selectedRaceSettings.selectedTrackModelProperty().bindBidirectional(trackUIModel.selectedTrackModelProperty());
+
         currentRaceSettings = selectedRaceSettings; // initial value but not bound, wait for user(UI) to choose.
     }
 
@@ -50,6 +59,7 @@ public class RaceUIModelImpl implements RaceUIModel {
     public void selectRaceSettings(RaceSettings nextRaceSettings) {
         if (raceSettingsObseravleList.contains(nextRaceSettings)) {
             selectedRaceSettings.cloneFrom(nextRaceSettings);
+            selectedRaceSettings.performSelection();
 
             currentRaceSettings = nextRaceSettings;
         }
@@ -68,6 +78,9 @@ public class RaceUIModelImpl implements RaceUIModel {
     public void deleteRaceSettings(RaceSettings raceSettings) {
         if (raceSettingsObseravleList.contains(raceSettings)) {
             raceSettingsObseravleList.remove(raceSettings);
+            // Unbind anything in race settings
+            raceSettings.selectedTrackModelProperty().unbindBidirectional(trackUIModel.selectedTrackModelProperty());
+
             if (!raceSettingsObseravleList.isEmpty()) {
                 selectRaceSettings(raceSettingsObseravleList.get(0));
                 store();

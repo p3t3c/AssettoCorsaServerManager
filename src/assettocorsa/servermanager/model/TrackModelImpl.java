@@ -64,6 +64,11 @@ public class TrackModelImpl implements TrackModel {
         return selectedProperty;
     }
 
+    @Override
+    public void setSelected(boolean selected) {
+        selectedProperty.setValue(selected);
+    }
+
     ACTrackData getAcTrackData() {
         return acTrackData;
     }
