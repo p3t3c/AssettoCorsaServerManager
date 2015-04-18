@@ -3,23 +3,32 @@ package assettocorsa.servermanager;
 import assettocorsa.servermanager.model.*;
 import assettocorsa.servermanager.ui.listview.DriverOnRosterNameConverter;
 import assettocorsa.servermanager.ui.listview.RaceSettingsNameConverter;
+import assettocorsa.servermanager.ui.trackview.TrackViewControl;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.TilePane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Window;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 public class MainWindowController implements Initializable {
 
@@ -41,6 +50,7 @@ public class MainWindowController implements Initializable {
     public TextField serverNameTextField;
     public TextField serverPasswordTextField;
     public TextField adminPasswordTextField;
+    public TilePane trackListTilePane;
     /**
      * Data storage handler for the driver roster.
      * Injecting this would be best.
@@ -57,6 +67,8 @@ public class MainWindowController implements Initializable {
     private AppSettings appSettings;
 
     private RaceUIModel raceUIModel;
+    private TrackUIModel trackUIModel;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -70,15 +82,23 @@ public class MainWindowController implements Initializable {
 
         // TODO inject this
         appSettings = new AppSettingsImpl();
+        // TODO inject this
+        trackUIModel = new TrackUIModelImpl(appSettings);
+
+        initaliseBindingsToAppSettings(appSettings);
+        initaliseTrackDisplay(trackUIModel);
+
+        // Do the load after all other users so they get the first update to the properties
         appSettings.loadAppSettings();
 
         // TODO inject this
-        raceUIModel = new RaceUIModelImpl();
+        raceUIModel = new RaceUIModelImpl(trackUIModel);
+
         initiliseBindingToRaceUIModel();
 
         intialiseDriverRosterListView(driverList);
-        initaliseBindingsToAppSettings(appSettings);
     }
+
 
     private void initiliseBindingToRaceUIModel() {
         raceListView.setCellFactory(TextFieldListCell.forListView(new RaceSettingsNameConverter()));
@@ -121,6 +141,38 @@ public class MainWindowController implements Initializable {
         driverRosterListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         driverRosterListView.setItems(driverList);
 
+    }
+
+
+    /**
+     * Create the TrackViewControls and add them.
+     * Perform bindings. The bindings are from model to control (unidirectional) as the data is read only.
+     *
+     * @param trackUIModel
+     */
+    private void initaliseTrackDisplay(TrackUIModel trackUIModel) {
+        ObservableList<TrackModel> trackModels = trackUIModel.trackModelListProperty();
+        // Listener that adds and removes TrackViewControls from the tile view for tracks
+        trackModels.addListener(new ListChangeListener<TrackModel>() {
+            @Override
+            public void onChanged(Change<? extends TrackModel> change) {
+                change.next();
+                if (change.wasRemoved()) {
+                    List<? extends TrackModel> removedTrackModels = change.getRemoved();
+                    List<Node> nodesToRemove = trackListTilePane.getChildren().stream().filter(node -> node instanceof TrackViewControl && removedTrackModels.contains(((TrackViewControl) node).getTrackModel())).
+                            collect(toList());
+                    trackListTilePane.getChildren().removeAll(nodesToRemove);
+                }
+
+                if (change.wasAdded()) {
+                    List<? extends TrackModel> addedTrackModels = change.getAddedSubList();
+                    addedTrackModels.forEach(trackModel -> {
+                        TrackViewControl trackViewControl = new TrackViewControl(trackModel);
+                        trackListTilePane.getChildren().add(trackViewControl);
+                    });
+                }
+            }
+        });
     }
 
     /**
